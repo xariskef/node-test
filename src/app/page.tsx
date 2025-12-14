@@ -87,32 +87,37 @@ export default function Home() {
       const aboutTitle = aboutRef.current?.querySelector('h2');
       const aboutParagraphs = aboutRef.current?.querySelectorAll('p');
       
-      gsap.fromTo(aboutTitle, 
-        { opacity: 0, y: 50, scale: 0.8 }, 
-        {
-          opacity: 1, y: 0, scale: 1, duration: 1.2,
-          scrollTrigger: {
-            trigger: aboutRef.current,
-            start: 'top 75%',
+      if (aboutTitle) {
+        gsap.fromTo(aboutTitle, 
+          { opacity: 0, y: 50, scale: 0.8 }, 
+          {
+            opacity: 1, y: 0, scale: 1, duration: 1.2,
+            scrollTrigger: {
+              trigger: aboutRef.current,
+              start: 'top 75%',
+            }
           }
-        }
-      );
+        );
+      }
 
-      gsap.fromTo(aboutParagraphs, 
-        { opacity: 0, y: 30 }, 
-        {
-          opacity: 1, y: 0, duration: 1, stagger: 0.3,
-          scrollTrigger: {
-            trigger: aboutRef.current,
-            start: 'top 70%',
+      if (aboutParagraphs && aboutParagraphs.length > 0) {
+        gsap.fromTo(aboutParagraphs, 
+          { opacity: 0, y: 30 }, 
+          {
+            opacity: 1, y: 0, duration: 1, stagger: 0.3,
+            scrollTrigger: {
+              trigger: aboutRef.current,
+              start: 'top 70%',
+            }
           }
-        }
-      );
+        );
+      }
 
       // Skills with 3D flip animation
       const skills = gsap.utils.toArray('.skill');
-      skills.forEach((skill: any, index) => {
-        gsap.fromTo(skill, 
+      skills.forEach((skill, index) => {
+        const skillElement = skill as HTMLElement;
+        gsap.fromTo(skillElement, 
           { opacity: 0, rotateY: -180, z: -100 }, 
           {
             opacity: 1, rotateY: 0, z: 0, 
@@ -126,18 +131,19 @@ export default function Home() {
         );
 
         // Hover animation
-        skill.addEventListener('mouseenter', () => {
-          gsap.to(skill, { scale: 1.1, rotateY: 10, duration: 0.3 });
+        skillElement.addEventListener('mouseenter', () => {
+          gsap.to(skillElement, { scale: 1.1, rotateY: 10, duration: 0.3 });
         });
-        skill.addEventListener('mouseleave', () => {
-          gsap.to(skill, { scale: 1, rotateY: 0, duration: 0.3 });
+        skillElement.addEventListener('mouseleave', () => {
+          gsap.to(skillElement, { scale: 1, rotateY: 0, duration: 0.3 });
         });
       });
 
       // Projects with magnetic effect
       const projects = gsap.utils.toArray('.project');
-      projects.forEach((project: any, index) => {
-        gsap.fromTo(project, 
+      projects.forEach((project, index) => {
+        const projectElement = project as HTMLElement;
+        gsap.fromTo(projectElement, 
           { opacity: 0, y: 100, rotateX: -45 }, 
           {
             opacity: 1, y: 0, rotateX: 0,
@@ -152,10 +158,10 @@ export default function Home() {
         );
 
         // Parallax on scroll
-        gsap.to(project, {
+        gsap.to(projectElement, {
           y: -50,
           scrollTrigger: {
-            trigger: project,
+            trigger: projectElement,
             start: 'top bottom',
             end: 'bottom top',
             scrub: 1,
@@ -165,8 +171,9 @@ export default function Home() {
 
       // Testimonials slide from sides
       const testimonials = gsap.utils.toArray('.testimonial');
-      testimonials.forEach((testimonial: any, index) => {
-        gsap.fromTo(testimonial, 
+      testimonials.forEach((testimonial, index) => {
+        const testimonialElement = testimonial as HTMLElement;
+        gsap.fromTo(testimonialElement, 
           { opacity: 0, x: index % 2 === 0 ? -200 : 200, rotation: index % 2 === 0 ? -10 : 10 }, 
           {
             opacity: 1, x: 0, rotation: 0,
@@ -183,18 +190,20 @@ export default function Home() {
 
       // Contact form elements animate in sequence
       const formElements = contactRef.current?.querySelectorAll('h2, p, a, input, textarea, button');
-      gsap.fromTo(formElements, 
-        { opacity: 0, y: 30, scale: 0.9 }, 
-        {
-          opacity: 1, y: 0, scale: 1,
-          duration: 0.8,
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: contactRef.current,
-            start: 'top 70%',
+      if (formElements && formElements.length > 0) {
+        gsap.fromTo(formElements, 
+          { opacity: 0, y: 30, scale: 0.9 }, 
+          {
+            opacity: 1, y: 0, scale: 1,
+            duration: 0.8,
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: contactRef.current,
+              start: 'top 70%',
+            }
           }
-        }
-      );
+        );
+      }
 
       // Smooth color transitions on scroll
       ScrollTrigger.create({
@@ -473,7 +482,7 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="testimonial bg-linear-to-br from-gray-900 to-gray-800 p-10 rounded-2xl shadow-2xl border border-cyan-500/30 hover:border-cyan-400 transition-all duration-500">
-              <div className="text-6xl mb-6 text-cyan-400">"</div>
+              <div className="text-6xl mb-6 text-cyan-400">&quot;</div>
               <p className="text-xl italic mb-8 text-gray-200 leading-relaxed">Charis delivered exceptional work on our project. His attention to detail and creative solutions exceeded our expectations.</p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-linear-to-br from-cyan-500 to-blue-600 rounded-full mr-4"></div>
@@ -484,7 +493,7 @@ export default function Home() {
               </div>
             </div>
             <div className="testimonial bg-linear-to-br from-gray-900 to-gray-800 p-10 rounded-2xl shadow-2xl border border-blue-500/30 hover:border-blue-400 transition-all duration-500">
-              <div className="text-6xl mb-6 text-blue-400">"</div>
+              <div className="text-6xl mb-6 text-blue-400">&quot;</div>
               <p className="text-xl italic mb-8 text-gray-200 leading-relaxed">Working with Charis was a pleasure. He brought fresh ideas and implemented them flawlessly.</p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-full mr-4"></div>
